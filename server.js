@@ -21,11 +21,12 @@ const database = {
 };
 
 app.get("/", (req, res) => {
-  console.log("App is tryna connect");
+  console.log("Tryna connect to home route");
   res.send(database.users);
 });
 
 app.post("/signin", (req, res) => {
+  console.log("tryna hit signin route");
   if (
     req.body.email === database.users[0].email &&
     req.body.password === database.users[0].password
@@ -35,13 +36,13 @@ app.post("/signin", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
+  console.log("tryna hit register route");
   const { email, name, password } = req.body;
 
   database.users.push({
     id: "123",
     name: name,
     email: email,
-    password: password,
     entries: 0,
     joined: new Date(),
   });
