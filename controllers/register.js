@@ -2,6 +2,10 @@ const handleRegister = (req, res, db, bcrypt) => {
   console.log("tryna hit register route");
   const { email, name, password } = req.body;
 
+  if (!email || !password || !name) {
+    return res.status(400).json("Incorrect form submission");
+  }
+
   const hash = bcrypt.hashSync(password);
 
   db.transaction((trx) => {
