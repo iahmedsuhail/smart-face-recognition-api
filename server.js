@@ -20,6 +20,24 @@ const database = {
   ],
 };
 
+var db = require("knex")({
+  client: "pg",
+  version: "8.3",
+  connection: {
+    host: "127.0.0.1",
+    user: "postgres",
+    password: "password",
+    database: "smart-brain",
+  },
+});
+
+db.select("*")
+  .from("users")
+  .then((data) => {
+    // console.log(data);
+  })
+  .catch((err) => console.log(err));
+
 app.get("/", (req, res) => {
   console.log("Tryna connect to home route");
   res.send(database.users);
@@ -39,15 +57,18 @@ app.post("/register", (req, res) => {
   console.log("tryna hit register route");
   const { email, name, password } = req.body;
 
-  database.users.push({
-    id: "123",
-    name: name,
-    email: email,
-    entries: 0,
-    joined: new Date(),
-  });
-
-  res.json(database.users[database.users.length - 1]);
+  db("users")
+    .returning("*")
+    .insert({
+      name: name,
+      email: email,
+      entries: 0,
+      joined: new Date(),
+    })
+    .then((user) => {
+      res.json(user[0]);
+    })
+    .catch((err) => res.status(400).json("Unable to register"));
 });
 
 app.get("/profile/:id", (req, res) => {
