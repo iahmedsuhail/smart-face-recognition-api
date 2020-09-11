@@ -7,19 +7,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const database = {
-  users: [
-    {
-      id: "123",
-      name: "jhon",
-      email: "jhon@gmail.com",
-      password: "jhon",
-      entries: 0,
-      joined: new Date(),
-    },
-  ],
-};
-
 var db = require("knex")({
   client: "pg",
   version: "8.3",
