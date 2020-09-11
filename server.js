@@ -22,18 +22,6 @@ var db = require("knex")({
   },
 });
 
-db.select("*")
-  .from("users")
-  .then((data) => {
-    // console.log(data);
-  })
-  .catch((err) => console.log(err));
-
-app.get("/", (req, res) => {
-  console.log("Tryna connect to home route");
-  // res.send(database.users);
-});
-
 app.post("/signin", (req, res) => {
   signin.handleSignin(req, res, db, bcrypt);
 });
