@@ -2,24 +2,26 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt-nodejs");
 var cors = require("cors");
+const morgan = require("morgan");
+
 const register = require("./controllers/register.js");
 const signin = require("./controllers/signin.js");
 const profile = require("./controllers/profile.js");
 const image = require("./controllers/image.js");
 
 const app = express();
+
 app.use(bodyParser.json());
 app.use(cors());
+app.use(morgan("combined"));
 
 var db = require("knex")({
   client: "pg",
-  version: "8.3",
-  connection: {
-    host: "127.0.0.1",
-    user: "postgres",
-    password: "password",
-    database: "smart-brain",
-  },
+  connection: process.env.POSTGRES_URI,
+});
+
+app.get("/", (req, res) => {
+  res.json("Server up and running");
 });
 
 app.post("/signin", (req, res) => {
